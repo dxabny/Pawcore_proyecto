@@ -1,0 +1,375 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --primary: #3a6fd8;
+    --primary-dark: #1a3a5a;
+    --accent: #eef4ff;
+    --text-main: #1a1a2e;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --danger: #ef4444;
+    --radius: 16px;
+    --shadow: 0 4px 20px rgba(26,26,46,0.10);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    background-image: url('/static/img/fondo_dashboard.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: #eef2fa !important;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(238, 242, 250, 0.75);
+    backdrop-filter: blur(1.5px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Ensure nav and footer stay on top */
+  nav, footer { position: relative; z-index: 10; }
+
+  .dash-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: rgba(255,255,255,0.95);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 1.5rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .sidebar-logo {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo span { color: var(--primary); }
+
+  .sidebar-header {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-link {
+    display: block;
+    padding: 10px 13px;
+    margin-bottom: 4px;
+    text-decoration: none;
+    color: var(--text-main);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sidebar-link:hover { background: var(--accent); color: var(--primary); }
+  .sidebar-link.active { background: var(--primary); color: white; }
+
+  .sidebar-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-add-pet {
+    display: block;
+    text-align: center;
+    padding: 9px;
+    background: var(--accent);
+    color: var(--primary);
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 0.83rem;
+    text-decoration: none;
+  }
+  .btn-add-pet:hover { background: #dce6f8; }
+
+  /* MAIN CONTENT */
+  .main-content { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .card {
+    background: rgba(255,255,255,0.95);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(8px);
+  }
+
+  /* PET HEADER */
+  .pet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .pet-name {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: -0.03em;
+  }
+  .pet-id {
+    font-size: 0.82rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-top: 3px;
+  }
+
+  .badge-especie {
+    background: var(--accent);
+    color: var(--primary);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid #c3d5f5;
+    white-space: nowrap;
+  }
+
+  .section-title {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    border-radius: 2px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+
+  .info-item { display: flex; flex-direction: column; gap: 3px; }
+  .info-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em; }
+  .info-value { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+    background: rgba(248,250,255,0.8);
+  }
+  td { padding: 13px 14px; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: var(--text-main); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: rgba(248,250,255,0.9); }
+
+  .hist-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .hist-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .hist-label { font-size: 0.68rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .hist-value { font-size: 0.9rem; color: var(--text-main); line-height: 1.5; }
+
+  .bit-item {
+    padding: 16px;
+    border-radius: 10px;
+    background: rgba(248,250,255,0.9);
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .bit-item:last-child { margin-bottom: 0; }
+  .bit-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .bit-fecha { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+  .bit-tipo {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--accent);
+    color: var(--primary);
+    padding: 2px 9px;
+    border-radius: 20px;
+    border: 1px solid #c3d5f5;
+  }
+  .bit-motivo { font-weight: 700; font-size: 0.95rem; color: var(--primary-dark); margin-bottom: 8px; }
+  .bit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .bit-field { display: flex; flex-direction: column; gap: 2px; }
+  .bit-field-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .bit-field-value { font-size: 0.85rem; color: var(--text-main); line-height: 1.4; }
+  .bit-field.full { grid-column: 1 / -1; }
+
+  .empty-msg { color: var(--text-muted); font-size: 0.88rem; text-align: center; padding: 1.5rem 0; }
+
+  @media (max-width: 768px) {
+    .dash-wrap { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .pet-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<div class="dash-wrap">
+  <aside class="sidebar">
+    <div class="sidebar-logo">Paw<span>Core</span></div>
+    <div class="sidebar-header">Mis Mascotas</div>
+    {% for m in mascotas %}
+      <a href="/dashboard?cedula={{ cedula }}&mascota_id={{ m.id_mascota }}"
+         class="sidebar-link {% if m.id_mascota == mascota_activa.id_mascota %}active{% endif %}">
+        {{ m.nombre_mascota }}
+      </a>
+    {% endfor %}
+    <div class="sidebar-actions">
+      <a href="/registrar-mascota?cedula={{ cedula }}" class="btn-add-pet">+ Agregar mascota</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="card">
+      <div class="pet-header">
+        <div>
+          <div class="pet-name">{{ mascota_activa.nombre_mascota }}</div>
+          {# El ID solo es visible para el veterinario en su panel #}
+        </div>
+        <span class="badge-especie">{{ mascota_activa.especie }}</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Información Principal</div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-label">Raza</span><span class="info-value">{{ mascota_activa.raza }}</span></div>
+        <div class="info-item"><span class="info-label">Peso</span><span class="info-value">{{ mascota_activa.peso }} kg</span></div>
+        <div class="info-item"><span class="info-label">Edad</span><span class="info-value">{{ mascota_activa.edad }} años</span></div>
+        <div class="info-item"><span class="info-label">Género</span><span class="info-value">{{ mascota_activa.genero or '—' }}</span></div>
+        <div class="info-item"><span class="info-label">Color</span><span class="info-value">{{ mascota_activa.color or '—' }}</span></div>
+        <div class="info-item"><span class="info-label">Estado Rep.</span><span class="info-value">{{ mascota_activa.estado_reproductivo or '—' }}</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Esquema de Vacunación</div>
+      <table>
+        <thead><tr><th>Vacuna</th><th>Aplicación</th><th>Próxima dosis</th></tr></thead>
+        <tbody>
+          {% for v in vacunas %}
+          <tr>
+            <td><strong>{{ v.nombre_vacuna }}</strong></td>
+            <td>{{ v.fecha_aplicacion }}</td>
+            <td style="color: var(--primary); font-weight: 600;">{{ v.proxima_dosis }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="3" class="empty-msg">Sin vacunas registradas.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Historial Clínico</div>
+      {% for h in historial %}
+      <div class="hist-item">
+        <div class="hist-label">Enfermedades previas</div>
+        <div class="hist-value">{{ h.enfermedades_previas or 'Ninguna' }}</div>
+        <div class="hist-label" style="margin-top:10px;">Cirugías previas</div>
+        <div class="hist-value">{{ h.cirugias_previas or 'Ninguna' }}</div>
+        <div class="hist-label" style="margin-top:10px;">Alergias</div>
+        <div class="hist-value">{{ h.alergias or 'Ninguna' }}</div>
+        <div class="hist-label" style="margin-top:10px;">Tratamientos previos</div>
+        <div class="hist-value">{{ h.tratamientos_previos or 'Ninguno' }}</div>
+      </div>
+      {% else %}
+      <p class="empty-msg">Sin historial clínico registrado.</p>
+      {% endfor %}
+    </div>
+
+    <div class="card">
+      <div class="section-title">Bitácora de Consultas</div>
+      {% for b in bitacora %}
+      <div class="bit-item">
+        <div class="bit-header">
+          <span class="bit-fecha">{{ b.fecha }}</span>
+          <span class="bit-tipo">{{ b.tipo_evento }}</span>
+        </div>
+        <div class="bit-motivo">{{ b.motivo }}</div>
+        <div class="bit-grid">
+          <div class="bit-field">
+            <span class="bit-field-label">Síntomas</span>
+            <span class="bit-field-value">{{ b.sintomas or '—' }}</span>
+          </div>
+          <div class="bit-field">
+            <span class="bit-field-label">Diagnóstico</span>
+            <span class="bit-field-value">{{ b.diagnostico or '—' }}</span>
+          </div>
+          <div class="bit-field">
+            <span class="bit-field-label">Procedimiento</span>
+            <span class="bit-field-value">{{ b.procedimiento or '—' }}</span>
+          </div>
+          <div class="bit-field">
+            <span class="bit-field-label">Medicación</span>
+            <span class="bit-field-value">{{ b.medicacion or 'Ninguna' }}</span>
+          </div>
+          <div class="bit-field full">
+            <span class="bit-field-label">Observaciones</span>
+            <span class="bit-field-value">{{ b.observaciones or '—' }}</span>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <p class="empty-msg">Sin consultas registradas.</p>
+      {% endfor %}
+    </div>
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - PawCore</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #eef2fb; font-family: 'IBM Plex Sans', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        /* Logo en esquina */
+        /* Logo alineado a la izquierda extrema */
+.header-logo { width: 100%; display: flex; justify-content: flex-start; padding-left: 60px; margin-bottom: 20px; }
+        .logo { font-size: 1.8rem; font-weight: 700; color: #1a3a5a; text-decoration: none; }
+        .logo span { color: #3a6fd8; }
+
+        .blob { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(58, 111, 216, 0.12) 0%, rgba(255,255,255,0) 70%); border-radius: 50%; z-index: -1; filter: blur(60px); }
+        .card { background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(26, 58, 90, 0.08); width: 100%; max-width: 550px; border: 1px solid rgba(255, 255, 255, 0.4); }
+        h2 { text-align: center; color: #1a3a5a; margin-bottom: 30px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 20px; }
+        .full-width { grid-column: span 2; }
+        .field-group { display: flex; flex-direction: column; }
+        label { font-size: 0.85rem; font-weight: 600; color: #4a5570; margin-bottom: 6px; }
+        input { width: 100%; padding: 13px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; background: #f8fafc; }
+        
+        .input-error { border-color: #d32f2f !important; background: #fffafa; }
+        .error-text { color: #d32f2f; font-size: 0.75rem; margin-top: 4px; display: block; font-weight: 600; }
+        .btn-submit { width: 100%; padding: 16px; background: #38a4df; color: white; border: none; border-radius: 14px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="blob"></div>
+
+    <div class="header-logo">
+        <a href="/" class="logo">Paw<span>Core</span></a>
+    </div>
+
+    <div class="card">
+        <h2>Crear Cuenta</h2>
+        <form action="/registro" method="post" class="form-grid">
+            <div class="field-group">
+                <label>Cédula</label>
+                <input type="text" name="cedula" class="{{ 'input-error' if errores and errores.cedula }}" value="{{ form.cedula if form else '' }}" required>
+                {% if errores and errores.cedula %}<span class="error-text">{{ errores.cedula }}</span>{% endif %}
+            </div>
+
+            <div class="field-group">
+                <label>Teléfono</label>
+                <input type="tel" name="telefono" class="{{ 'input-error' if errores and errores.telefono }}" value="{{ form.telefono if form else '' }}" required>
+                {% if errores and errores.telefono %}<span class="error-text">{{ errores.telefono }}</span>{% endif %}
+            </div>
+
+            <div class="field-group full-width">
+                <label>Nombre Completo</label>
+                <input type="text" name="nombre_completo" class="{{ 'input-error' if errores and errores.nombre_completo }}" value="{{ form.nombre_completo if form else '' }}" required>
+                {% if errores and errores.nombre_completo %}<span class="error-text">{{ errores.nombre_completo }}</span>{% endif %}
+            </div>
+
+            <div class="field-group full-width">
+                <label>Dirección</label>
+                <input type="text" name="direccion" class="{{ 'input-error' if errores and errores.direccion }}" value="{{ form.direccion if form else '' }}" required>
+                {% if errores and errores.direccion %}<span class="error-text">{{ errores.direccion }}</span>{% endif %}
+            </div>
+
+            <div class="field-group full-width">
+                <label>Correo Electrónico</label>
+                <input type="email" name="correo" class="{{ 'input-error' if errores and errores.correo }}" value="{{ form.correo if form else '' }}" required>
+                {% if errores and errores.correo %}<span class="error-text">{{ errores.correo }}</span>{% endif %}
+            </div>
+
+            <div class="field-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" class="{{ 'input-error' if errores and errores.password }}" required placeholder="Mín. 8 caracteres, mayúscula, número y símbolo">
+                <span style="font-size:0.72rem;color:#94a3b8;margin-top:4px;display:block;">Ej: MiMascota@2025</span>
+            </div>
+
+            <div class="field-group">
+                <label>Confirmar Clave</label>
+                <input type="password" name="password_confirm" class="{{ 'input-error' if errores and errores.password }}" required>
+                {% if errores and errores.password %}<span class="error-text">{{ errores.password }}</span>{% endif %}
+            </div>
+
+            <div class="full-width">
+                <button type="submit" class="btn-submit">Registrarse</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

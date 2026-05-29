@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawCore — Plataforma de Gestión Veterinaria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-900: #0f2044;
+      --blue-800: #1a3566;
+      --blue-700: #1e4080;
+      --blue-600: #2356a8;
+      --blue-500: #2d6fd8;
+      --blue-400: #4d87e8;
+      --blue-100: #dce8fb;
+      --blue-50:  #eef4ff;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+      --slate-300: #cbd5e1;
+      --slate-100: #f1f5f9;
+      --white: #ffffff;
+      --border: rgba(45,111,216,0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8faff;
+      color: var(--blue-900);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ───────────── NAV ───────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4rem;
+      height: 64px;
+      background: rgba(255,255,255,0.97);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 1px 12px rgba(15,32,68,0.06);
+    }
+
+    .nav-logo {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--blue-900);
+      text-decoration: none;
+      letter-spacing: -0.03em;
+    }
+    .nav-logo span { color: var(--blue-500); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost {
+      padding: 8px 18px;
+      border-radius: 7px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--slate-700);
+      border: 1px solid var(--slate-300);
+      background: transparent;
+      transition: all 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-ghost:hover { border-color: var(--blue-500); color: var(--blue-500); background: var(--blue-50); }
+
+    .btn-primary {
+      padding: 8px 20px;
+      border-radius: 7px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--blue-500);
+      color: white;
+      transition: all 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary:hover { background: var(--blue-600); }
+
+    .btn-vet {
+      padding: 8px 16px;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      border: 1px solid var(--blue-100);
+      transition: all 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-vet:hover { background: var(--blue-100); }
+
+    /* ───────────── HERO ───────────── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      padding-top: 64px;
+    }
+
+    /* Panel izquierdo */
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 4rem 5rem 5rem;
+      animation: slideUp 0.7s ease both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid var(--blue-100);
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      font-weight: 800;
+      color: var(--blue-900);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--blue-500);
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--slate-500);
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      max-width: 440px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 3rem;
+    }
+
+    .btn-cta-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-width: 230px;
+      padding: 14px 28px;
+      background: var(--blue-500);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      box-shadow: 0 4px 16px rgba(45,111,216,0.3);
+      transition: all 0.2s;
+    }
+    .btn-cta-main:hover {
+      background: var(--blue-600);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(45,111,216,0.38);
+    }
+
+    .btn-cta-sec {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-width: 230px;
+      padding: 13px 28px;
+      background: white;
+      color: var(--blue-900);
+      text-decoration: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1px solid var(--slate-300);
+      transition: all 0.18s;
+    }
+    .btn-cta-sec:hover { border-color: var(--blue-500); color: var(--blue-500); }
+
+    .btn-cta-vet {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 9px 16px;
+      background: transparent;
+      color: var(--slate-500);
+      text-decoration: none;
+      border-radius: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 500;
+      border: 1px solid var(--slate-300);
+      transition: all 0.18s;
+    }
+    .btn-cta-vet:hover { border-color: var(--blue-400); color: var(--blue-600); background: var(--blue-50); }
+    .btn-cta-vet svg { opacity: 0.5; }
+
+    .hero-metrics {
+      display: flex;
+      gap: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .metric-item { display: flex; flex-direction: column; gap: 2px; }
+    .metric-val {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--blue-900);
+      letter-spacing: -0.04em;
+    }
+    .metric-lbl {
+      font-size: 0.72rem;
+      color: var(--slate-500);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* Panel derecho — imagen */
+    .hero-right {
+      position: relative;
+      background: linear-gradient(160deg, var(--blue-800) 0%, var(--blue-600) 50%, var(--blue-400) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      animation: fadeIn 0.9s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Decoración geométrica de fondo */
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 400px; height: 400px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 280px; height: 280px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .hero-img-wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .hero-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    /* ───────────── FEATURES STRIP ───────────── */
+    .strip {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 5rem;
+      display: flex;
+      justify-content: center;
+      gap: 3.5rem;
+      flex-wrap: wrap;
+    }
+    .strip-item {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--slate-500);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .strip-line {
+      width: 20px;
+      height: 2px;
+      background: var(--blue-500);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ───────────── ABOUT SECTION ───────────── */
+    .section-about {
+      padding: 5.5rem 5rem;
+      background: #f8faff;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      margin-bottom: 1rem;
+    }
+
+    .about-title {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
+      font-weight: 800;
+      color: var(--blue-900);
+      letter-spacing: -0.04em;
+      line-height: 1.18;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-desc {
+      font-size: 0.95rem;
+      color: var(--slate-500);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .about-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .about-list li {
+      font-size: 0.9rem;
+      color: var(--slate-700);
+      font-weight: 500;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .about-list li::before {
+      content: '';
+      display: block;
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      background: var(--blue-500);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Módulos / características */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .feature-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem;
+      border: 1px solid var(--border);
+      transition: all 0.22s;
+    }
+    .feature-item:hover {
+      border-color: var(--blue-400);
+      box-shadow: 0 4px 20px rgba(45,111,216,0.08);
+      transform: translateY(-2px);
+    }
+
+    .fi-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--blue-900);
+      margin-bottom: 0.4rem;
+    }
+
+    .fi-desc {
+      font-size: 0.8rem;
+      color: var(--slate-500);
+      line-height: 1.55;
+    }
+
+    .fi-accent {
+      display: block;
+      width: 28px;
+      height: 3px;
+      background: var(--blue-500);
+      border-radius: 2px;
+      margin-bottom: 0.85rem;
+    }
+
+    /* ───────────── HOW IT WORKS ───────────── */
+    .section-how {
+      padding: 5rem 5rem;
+      background: white;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .sec-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .sec-title {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+      font-weight: 800;
+      color: var(--blue-900);
+      letter-spacing: -0.04em;
+      margin-bottom: 0.75rem;
+    }
+
+    .sec-desc {
+      font-size: 0.9rem;
+      color: var(--slate-500);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--blue-50);
+      position: relative;
+    }
+
+    .step-num {
+      font-family: 'Sora', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--blue-100);
+      line-height: 1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.05em;
+    }
+
+    .step-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--blue-900);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.82rem;
+      color: var(--slate-500);
+      line-height: 1.6;
+    }
+
+    /* ───────────── CTA BANNER ───────────── */
+    .cta-banner {
+      padding: 4.5rem 5rem;
+      background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 50%, var(--blue-600) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 350px; height: 350px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+    .cta-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -60px;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+
+    .cta-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      display: block;
+      margin-bottom: 0.9rem;
+    }
+
+    .cta-title {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.85rem;
+      line-height: 1.15;
+    }
+
+    .cta-desc {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 520px;
+      margin: 0 auto 2.25rem;
+      line-height: 1.7;
+    }
+
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: white;
+      color: var(--blue-700);
+      text-decoration: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: all 0.2s;
+    }
+    .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(0,0,0,0.18); }
+
+    /* ───────────── FOOTER ───────────── */
+    footer {
+      background: var(--blue-900);
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.78rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    footer span { color: var(--blue-400); font-weight: 600; }
+
+    /* ───────────── RESPONSIVE ───────────── */
+    @media (max-width: 960px) {
+      nav { padding: 0 1.5rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right {
+        min-height: 420px;
+        clip-path: none;
+      }
+      .hero-left { padding: 3.5rem 2rem 2.5rem; }
+      .hero-metrics { gap: 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .strip { padding: 1.1rem 2rem; gap: 1.5rem; }
+      .section-about, .section-how, .cta-banner { padding: 3.5rem 2rem; }
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .btn-vet { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">Paw<span>Core</span></a>
+    <div class="nav-right">
+      <a href="/login" class="btn-ghost">Iniciar sesión</a>
+      <a href="/registro" class="btn-primary">Registrarse</a>
+      <a href="/admin/login" class="btn-vet">Acceso Veterinario</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <span class="hero-label">Plataforma de gestión veterinaria</span>
+
+      <h1 class="hero-title">
+        La historia médica<br>
+        de tu mascota,<br>
+        <em>siempre disponible</em>
+      </h1>
+
+      <p class="hero-desc">
+        PawCore es una plataforma digital especializada en la gestión integral de mascotas. Centraliza historiales clínicos, vacunaciones, consultas y seguimiento médico en un solo sistema accesible para propietarios y veterinarios.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/registro" class="btn-cta-main">Crear cuenta gratuita</a>
+        <a href="/login" class="btn-cta-sec">Iniciar sesión</a>
+        <a href="/admin/login" class="btn-cta-vet">
+          Acceso al panel veterinario
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-metrics">
+        <div class="metric-item">
+          <span class="metric-val">24/7</span>
+          <span class="metric-lbl">Disponible</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val">100%</span>
+          <span class="metric-lbl">Digital</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val">Mult.</span>
+          <span class="metric-lbl">Mascotas</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-img-wrap">
+        <img src="/static/img/FONDO.PNG" alt="PawCore — Gestión veterinaria">
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div class="strip">
+    <span class="strip-item"><span class="strip-line"></span>Historial clínico digital</span>
+    <span class="strip-item"><span class="strip-line"></span>Control de vacunación</span>
+    <span class="strip-item"><span class="strip-line"></span>Bitácora de consultas</span>
+    <span class="strip-item"><span class="strip-line"></span>Panel veterinario</span>
+    <span class="strip-item"><span class="strip-line"></span>Múltiples mascotas</span>
+  </div>
+
+  <!-- QUÉ ES PAWCORE -->
+  <section class="section-about">
+    <div class="about-grid">
+      <div>
+        <span class="about-tag">Qué es PawCore</span>
+        <h2 class="about-title">Gestión veterinaria integral para propietarios y clínicas</h2>
+        <p class="about-desc">
+          PawCore es un sistema de administración médica para mascotas que permite registrar, consultar y hacer seguimiento de toda la información clínica relevante. Diseñado para propietarios que quieren llevar un control preciso de la salud de sus mascotas y para veterinarios que necesitan acceder a expedientes completos y actualizados.
+        </p>
+        <ul class="about-list">
+          <li>Registro completo de pacientes con datos clínicos, raza, peso y condición reproductiva</li>
+          <li>Historial médico con enfermedades, cirugías, alergias y tratamientos previos</li>
+          <li>Esquema de vacunación con fechas de aplicación y próximas dosis</li>
+          <li>Bitácora de consultas con diagnóstico, síntomas y medicación registrados</li>
+          <li>Panel exclusivo para veterinarios con acceso a todos los expedientes</li>
+        </ul>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <span class="fi-accent"></span>
+          <div class="fi-title">Historial Clínico</div>
+          <p class="fi-desc">Registro completo de enfermedades, cirugías, alergias y tratamientos previos de cada mascota.</p>
+        </div>
+        <div class="feature-item">
+          <span class="fi-accent"></span>
+          <div class="fi-title">Control de Vacunas</div>
+          <p class="fi-desc">Seguimiento del esquema de vacunación con alertas de próximas dosis y fechas de aplicación.</p>
+        </div>
+        <div class="feature-item">
+          <span class="fi-accent"></span>
+          <div class="fi-title">Bitácora de Consultas</div>
+          <p class="fi-desc">Documentación de cada visita veterinaria: motivo, diagnóstico, procedimiento y medicación.</p>
+        </div>
+        <div class="feature-item">
+          <span class="fi-accent"></span>
+          <div class="fi-title">Panel Veterinario</div>
+          <p class="fi-desc">Acceso especializado con vista completa de expedientes, estadísticas y gestión de pacientes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="section-how">
+    <div class="section-header">
+      <span class="sec-tag">Cómo funciona</span>
+      <h2 class="sec-title">Tres pasos para comenzar</h2>
+      <p class="sec-desc">
+        Registrarse en PawCore es rápido. En minutos tienes el expediente médico completo de tu mascota organizado y disponible.
+      </p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Crea tu cuenta</div>
+        <p class="step-desc">Regístrate con tus datos personales. El proceso toma menos de dos minutos y no requiere tarjeta de crédito.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">Registra tu mascota</div>
+        <p class="step-desc">Agrega los datos clínicos, raza, peso, historial médico y esquema de vacunación de cada una de tus mascotas.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Gestiona y consulta</div>
+        <p class="step-desc">Accede al historial completo desde cualquier dispositivo. Tu veterinario puede consultarlo en tiempo real desde su panel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <span class="cta-tag">Gestión veterinaria profesional</span>
+    <h2 class="cta-title">Toda la información médica de tu mascota<br>en un solo lugar</h2>
+    <p class="cta-desc">
+      Propietarios y veterinarios confían en PawCore para mantener expedientes clínicos precisos, actualizados y accesibles cuando más se necesitan.
+    </p>
+    <a href="/registro" class="btn-cta-white">Comenzar ahora — es gratis</a>
+  </section>
+
+  <footer>
+    &copy; 2025 <span>PawCore</span> &mdash; Plataforma de gestión veterinaria digital
+  </footer>
+
+</body>
+</html>

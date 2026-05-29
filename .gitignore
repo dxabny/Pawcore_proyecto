@@ -1,0 +1,54 @@
+# Entorno virtual
+venv/
+env/
+.venv/
+.env/
+
+# Base de datos SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# Variables de entorno
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# Distribuciones / empaquetado
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Cache de pytest
+.pytest_cache/
+.cache/
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Archivos de cobertura de tests
+htmlcov/
+.coverage
+coverage.xml
+
+# Jupyter Notebooks
+.ipynb_checkpoints/

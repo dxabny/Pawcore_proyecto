@@ -1,0 +1,830 @@
+{% extends "base.html" %}
+
+{% block nav_extra %}
+{% endblock %}
+
+{% block estilos %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --primary: #3a6fd8;
+    --primary-dark: #1a3a5a;
+    --primary-light: #5b8ff0;
+    --accent: #dce6f8;
+    --accent-soft: #eef4ff;
+    --text-main: #1a1a2e;
+    --text-muted: #64748b;
+    --bg-light: #f8faff;
+    --bg-page: #eef2fa;
+    --border-color: #e2e8f0;
+    --success: #10b981;
+    --success-soft: #d1fae5;
+    --danger: #ef4444;
+    --danger-soft: #fee2e2;
+    --warning: #f59e0b;
+    --warning-soft: #fef3c7;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px -2px rgba(26, 58, 90, 0.10), 0 2px 6px -1px rgba(0,0,0,0.04);
+    --radius: 14px;
+    --radius-sm: 9px;
+    --radius-xs: 6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background-image: url('/static/img/Huellas.png');
+    background-size: 460px auto;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-color: #f0f5ff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-main);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(235, 242, 255, 0.55);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  nav, .contenido, footer { position: relative; z-index: 1; }
+
+  .card {
+    background: rgba(255,255,255,0.96) !important;
+    backdrop-filter: blur(6px);
+  }
+  .stat {
+    background: rgba(255,255,255,0.96) !important;
+    backdrop-filter: blur(6px);
+  }
+
+
+  .page-header { margin-bottom: 1.5rem; }
+  .page-header h2 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.2rem;
+  }
+  .page-header p { font-size: 0.9rem; color: var(--text-muted); }
+
+  /* (hero removed) */
+  .vet-hero {
+    background: linear-gradient(135deg, #1a3a5a 0%, #2756a8 55%, #3a6fd8 100%);
+    border-radius: var(--radius);
+    padding: 0;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(26,58,90,0.22);
+    min-height: 170px;
+  }
+  .vet-hero-text {
+    flex: 1;
+    padding: 2rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .vet-hero-text h2 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 0.35rem 0;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .vet-hero-text p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.72);
+    margin: 0;
+  }
+  .vet-hero-img {
+    width: 260px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(255,255,255,0.06);
+    padding: 0 1.5rem;
+  }
+  .vet-hero-img img {
+    height: 155px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.18));
+  }
+
+  /* ── STATS ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .stat {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.25rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .stat-label { font-size: 0.73rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat-val { font-size: 2.1rem; font-weight: 800; color: var(--primary-dark); margin-top: 4px; line-height: 1; letter-spacing: -0.03em; }
+
+  .seccion-titulo {
+    font-size: 0.69rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .seccion-titulo::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    border-radius: 2px;
+  }
+
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.25rem;
+  }
+
+  table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 8px; }
+  th {
+    background: var(--bg-light);
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.69rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border-color);
+    text-align: left;
+  }
+  th:first-child { border-radius: var(--radius-xs) 0 0 0; }
+  th:last-child  { border-radius: 0 var(--radius-xs) 0 0; }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-main);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tr:hover td { background-color: var(--accent-soft); }
+
+  .buscador { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+  .buscador input {
+    flex: 1;
+    padding: 9px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-family: inherit;
+    background: var(--bg-light);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: var(--text-main);
+  }
+  .buscador input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(58, 111, 216, 0.10);
+    outline: none;
+    background: white;
+  }
+  .buscador button {
+    padding: 0 20px;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(58, 111, 216, 0.22);
+  }
+  .buscador button:hover { opacity: 0.9; }
+
+  .btn-ver {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    padding: 4px 12px;
+    border-radius: var(--radius-xs);
+    background: transparent;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-ver:hover { background: var(--primary); color: white; }
+
+  .btn-editar {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #3a6fd8;
+    border: 1px solid #c3d4ee;
+    padding: 4px 11px;
+    border-radius: 6px;
+    background: #f0f5ff;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-editar:hover { background: #dce6f8; border-color: #3a6fd8; }
+
+  .btn-limpiar {
+    padding: 9px 16px;
+    background: white;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-limpiar:hover { border-color: var(--primary); color: var(--primary); }
+
+  .btn-guardar {
+    padding: 10px 26px;
+    background: linear-gradient(135deg, #059669, var(--success));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.88rem;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 16px;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.25);
+  }
+  .btn-guardar:hover { opacity: 0.92; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+  label {
+    display: block;
+    font-size: 0.71rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-xs);
+    background: var(--bg-light);
+    font-family: inherit;
+    font-size: 0.88rem;
+    color: var(--text-main);
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(58, 111, 216, 0.09);
+    outline: none;
+    background: white;
+  }
+
+  /* ── FICHA MÉDICA REDISEÑADA ── */
+  .ficha-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .ficha-badge {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 5px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .ficha-titulo {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .ficha-titulo span { color: var(--text-muted); font-weight: 400; font-size: 1rem; }
+
+  .ficha-dos-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .ficha-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.3rem 1.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+  }
+
+  .grid-detalles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+  .dato {
+    padding: 10px 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--border-color);
+  }
+  .dato-label { font-size: 0.63rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.08em; }
+  .dato-valor { font-size: 0.93rem; color: var(--text-main); font-weight: 600; margin-top: 2px; display: block; }
+
+  .ficha-tres-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.1rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .bitacora-item {
+    padding: 1.1rem 1.2rem;
+    border-left: 3px solid var(--primary);
+    background: var(--bg-light);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom: 0.85rem;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+  }
+  .bitacora-tipo {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .historial-bloque {
+    padding: 1.1rem 1.2rem;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.85rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .ficha-divider {
+    margin: 2.5rem 0;
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent), var(--primary-light), var(--accent), transparent);
+  }
+
+  .empty-msg {
+    text-align: center;
+    padding: 28px 20px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .search-result-banner {
+    font-size: 0.8rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    background: var(--accent-soft);
+    padding: 7px 12px;
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--accent);
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div style="max-width: 1050px; margin: 0 auto;">
+
+    <!-- Título limpio del panel -->
+    <div class="page-header">
+      <h2>Panel Veterinario</h2>
+      <p>Gestión integral de pacientes y expedientes clínicos.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Mascotas Registradas</div>
+        <div class="stat-val">{{ mascotas | length }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total Vacunas</div>
+        <div class="stat-val">{{ total_vacunas }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Con Historial</div>
+        <div class="stat-val">{{ total_historiales }}</div>
+      </div>
+    </div>
+
+    <!-- Reportes y Estadísticas -->
+    <div class="card" style="margin-bottom: 1.25rem;">
+      <p class="seccion-titulo">Reportes y Estadísticas del Sistema</p>
+
+      <!-- Tarjetas de métricas principales -->
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 2rem;">
+        <div style="background: linear-gradient(135deg, #1a3a5a, #2756a8); border-radius: 12px; padding: 18px; color: white; text-align:center;">
+          <div style="font-size:2.2rem; font-weight:800; letter-spacing:-0.03em;">{{ mascotas_todas | length }}</div>
+          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; opacity:0.85; margin-top:4px;">Mascotas</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #2756a8, #3a6fd8); border-radius: 12px; padding: 18px; color: white; text-align:center;">
+          <div style="font-size:2.2rem; font-weight:800; letter-spacing:-0.03em;">{{ total_vacunas }}</div>
+          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; opacity:0.85; margin-top:4px;">Vacunas</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #3a6fd8, #5b8ff0); border-radius: 12px; padding: 18px; color: white; text-align:center;">
+          <div style="font-size:2.2rem; font-weight:800; letter-spacing:-0.03em;">{{ total_historiales }}</div>
+          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; opacity:0.85; margin-top:4px;">Historiales</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #5b8ff0, #93c5fd); border-radius: 12px; padding: 18px; color: white; text-align:center;">
+          <div style="font-size:2.2rem; font-weight:800; letter-spacing:-0.03em;">{{ total_consultas }}</div>
+          <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; opacity:0.85; margin-top:4px;">Consultas</div>
+        </div>
+      </div>
+
+      <!-- Distribuciones por barras — sin porcentajes, solo números -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+
+        <!-- Distribución por especie -->
+        <div>
+          <p style="font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:1rem;">Mascotas por especie</p>
+          {% set total_m = mascotas_todas | length %}
+          {% set especies = {} %}
+          {% for m in mascotas_todas %}
+            {% if m.especie in especies %}
+              {% set _ = especies.update({m.especie: especies[m.especie] + 1}) %}
+            {% else %}
+              {% set _ = especies.update({m.especie: 1}) %}
+            {% endif %}
+          {% endfor %}
+          {% set bar_colors = ['#1a3a5a', '#2756a8', '#3a6fd8', '#5b8ff0', '#7ba8f5', '#93c5fd'] %}
+          {% for especie, cantidad in especies.items() %}
+            {% set pct = ((cantidad / total_m) * 100) | int if total_m > 0 else 0 %}
+            {% set color = bar_colors[loop.index0 % 6] %}
+            <div style="margin-bottom: 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-size:0.85rem; font-weight:600; color:var(--text-main);">{{ especie }}</span>
+                <span style="font-size:0.85rem; font-weight:800; color:{{ color }}; background:#f1f5f9; border-radius:6px; padding:2px 10px;">{{ cantidad }}</span>
+              </div>
+              <div style="background:#e2e8f0; border-radius:6px; height:10px; overflow:hidden;">
+                <div style="width:{{ pct }}%; background:{{ color }}; height:100%; border-radius:6px; min-width:6px; transition: width 0.3s;"></div>
+              </div>
+            </div>
+          {% else %}
+            <p style="color:var(--text-muted); font-size:0.85rem;">Sin datos aún.</p>
+          {% endfor %}
+        </div>
+
+        <!-- Distribución por género -->
+        <div>
+          <p style="font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:1rem;">Distribución por género</p>
+          {% set generos = {} %}
+          {% for m in mascotas_todas %}
+            {% if m.genero in generos %}
+              {% set _ = generos.update({m.genero: generos[m.genero] + 1}) %}
+            {% else %}
+              {% set _ = generos.update({m.genero: 1}) %}
+            {% endif %}
+          {% endfor %}
+          {% set genero_colors = ['#3a6fd8', '#5b8ff0', '#1a3a5a', '#2756a8'] %}
+          {% for genero, cantidad in generos.items() %}
+            {% set pct = ((cantidad / total_m) * 100) | int if total_m > 0 else 0 %}
+            {% set color = genero_colors[loop.index0 % 4] %}
+            <div style="margin-bottom: 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-size:0.85rem; font-weight:600; color:var(--text-main);">{{ genero }}</span>
+                <span style="font-size:0.85rem; font-weight:800; color:{{ color }}; background:#f1f5f9; border-radius:6px; padding:2px 10px;">{{ cantidad }}</span>
+              </div>
+              <div style="background:#e2e8f0; border-radius:6px; height:10px; overflow:hidden;">
+                <div style="width:{{ pct }}%; background:{{ color }}; height:100%; border-radius:6px; min-width:6px;"></div>
+              </div>
+            </div>
+          {% else %}
+            <p style="color:var(--text-muted); font-size:0.85rem;">Sin datos aún.</p>
+          {% endfor %}
+
+          <!-- Estado reproductivo -->
+          <p style="font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:1.5rem; margin-bottom:1rem;">Estado reproductivo</p>
+          {% set estados = {} %}
+          {% for m in mascotas_todas %}
+            {% if m.estado_reproductivo in estados %}
+              {% set _ = estados.update({m.estado_reproductivo: estados[m.estado_reproductivo] + 1}) %}
+            {% else %}
+              {% set _ = estados.update({m.estado_reproductivo: 1}) %}
+            {% endif %}
+          {% endfor %}
+          {% set estado_colors = ['#3a6fd8', '#2756a8', '#5b8ff0'] %}
+          {% for estado, cantidad in estados.items() %}
+            {% set pct = ((cantidad / total_m) * 100) | int if total_m > 0 else 0 %}
+            {% set color = estado_colors[loop.index0 % 3] %}
+            <div style="margin-bottom: 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-size:0.85rem; font-weight:600; color:var(--text-main);">{{ estado }}</span>
+                <span style="font-size:0.85rem; font-weight:800; color:{{ color }}; background:#f1f5f9; border-radius:6px; padding:2px 10px;">{{ cantidad }}</span>
+              </div>
+              <div style="background:#e2e8f0; border-radius:6px; height:10px; overflow:hidden;">
+                <div style="width:{{ pct }}%; background:{{ color }}; height:100%; border-radius:6px; min-width:6px;"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+
+      <!-- Consultas por tipo de evento -->
+      {% if chart_eventos_labels %}
+      <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+        <p style="font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:1rem;">Consultas por tipo de evento</p>
+        {% set event_colors = ['#1a3a5a', '#2756a8', '#3a6fd8', '#5b8ff0', '#7ba8f5', '#93c5fd'] %}
+        {% set total_eventos = chart_eventos_data | sum %}
+        {% for i in range(chart_eventos_labels | length) %}
+          {% set pct = ((chart_eventos_data[i] / total_eventos) * 100) | int if total_eventos > 0 else 0 %}
+          {% set color = event_colors[i % 6] %}
+          <div style="display:grid; grid-template-columns: 160px 1fr 50px; align-items:center; gap:12px; margin-bottom:12px;">
+            <span style="font-size:0.85rem; font-weight:600; color:var(--text-main);">{{ chart_eventos_labels[i] }}</span>
+            <div style="background:#e2e8f0; border-radius:6px; height:12px; overflow:hidden;">
+              <div style="width:{{ pct }}%; background:{{ color }}; height:100%; border-radius:6px; min-width:6px;"></div>
+            </div>
+            <span style="font-size:0.85rem; font-weight:800; color:{{ color }}; text-align:right;">{{ chart_eventos_data[i] }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
+
+            <div class="card">
+      <p class="seccion-titulo">Buscar Mascota</p>
+      <form action="/admin/dashboard" method="GET" class="buscador">
+        <input type="text" name="buscar" placeholder="ID Mascota o Cédula del Propietario..." value="{{ buscar or '' }}" />
+        <button type="submit">Buscar</button>
+        <a href="/admin/dashboard" class="btn-limpiar">Limpiar</a>
+      </form>
+
+      {% if buscar %}
+      <p class="search-result-banner">
+        Resultados para: "{{ buscar }}"
+      </p>
+      {% endif %}
+
+      <p class="seccion-titulo">Mascotas en el Sistema</p>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Especie</th>
+            <th>Raza</th>
+            <th>Dueño (C.C.)</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for mascota in mascotas %}
+          <tr>
+            <td><strong style="color:var(--primary);">#{{ mascota.id_mascota }}</strong></td>
+            <td style="font-weight: 700;">{{ mascota.nombre_mascota }}</td>
+            <td>{{ mascota.especie }}</td>
+            <td>{{ mascota.raza }}</td>
+            <td style="font-family: monospace; color: var(--text-muted);">{{ mascota.cedula_dueno }}</td>
+            <td><a href="/admin/dashboard?mascota_id={{ mascota.id_mascota }}&buscar={{ buscar or '' }}" class="btn-ver">Detalles</a></td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" class="empty-msg">No se encontraron pacientes registrados.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if mascota_activa %}
+      <hr class="ficha-divider">
+
+      <!-- ENCABEZADO FICHA -->
+      <div class="ficha-header">
+        <span class="ficha-badge">Expediente Clínico</span>
+        <h2 class="ficha-titulo">
+          {{ mascota_activa.nombre_mascota }}
+          <span>(ID: #{{ mascota_activa.id_mascota }})</span>
+        </h2>
+      </div>
+
+      <!-- DATOS PACIENTE + PROPIETARIO en 2 columnas -->
+      <div class="ficha-dos-col">
+        <div class="ficha-card">
+          <p class="seccion-titulo">Datos del Paciente</p>
+          <div class="grid-detalles">
+            <div class="dato"><span class="dato-label">Especie</span><span class="dato-valor">{{ mascota_activa.especie }}</span></div>
+            <div class="dato"><span class="dato-label">Raza</span><span class="dato-valor">{{ mascota_activa.raza }}</span></div>
+            <div class="dato"><span class="dato-label">Edad</span><span class="dato-valor">{{ mascota_activa.edad }} años</span></div>
+            <div class="dato"><span class="dato-label">Peso</span><span class="dato-valor">{{ mascota_activa.peso }} kg</span></div>
+            <div class="dato"><span class="dato-label">Género</span><span class="dato-valor">{{ mascota_activa.genero }}</span></div>
+            <div class="dato"><span class="dato-label">Color</span><span class="dato-valor">{{ mascota_activa.color }}</span></div>
+            <div class="dato"><span class="dato-label">Est. Reproductivo</span><span class="dato-valor">{{ mascota_activa.estado_reproductivo }}</span></div>
+          </div>
+        </div>
+
+        <div class="ficha-card">
+          <p class="seccion-titulo">Información del Propietario</p>
+          {% if dueno %}
+            <div class="grid-detalles">
+              <div class="dato"><span class="dato-label">Nombre Completo</span><span class="dato-valor">{{ dueno.nombre_completo }}</span></div>
+              <div class="dato"><span class="dato-label">Cédula</span><span class="dato-valor">{{ dueno.cedula }}</span></div>
+              <div class="dato"><span class="dato-label">Teléfono</span><span class="dato-valor">{{ dueno.telefono }}</span></div>
+              <div class="dato"><span class="dato-label">Correo</span><span class="dato-valor" style="font-size:0.82rem; word-break:break-all;">{{ dueno.correo }}</span></div>
+            </div>
+          {% else %}
+            <p style="color: var(--danger); font-size: 0.85rem; background: var(--danger-soft); padding: 10px 14px; border-radius: var(--radius-xs);">⚠️ No se encontraron datos del propietario vinculados.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- VACUNAS, HISTORIAL, BITÁCORA en layout limpio -->
+      <div class="card" id="vacunas">
+        <p class="seccion-titulo">Control de Vacunación</p>
+        <table>
+          <thead>
+            <tr><th>Vacuna</th><th>Fecha Aplicación</th><th>Próxima Dosis</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            {% for v in vacunas %}
+            <tr>
+              <td><strong style="color:var(--primary-dark);">{{ v.nombre_vacuna }}</strong></td>
+              <td>{{ v.fecha_aplicacion }}</td>
+              <td><span style="color:var(--primary); font-weight:700;">{{ v.proxima_dosis }}</span></td>
+              <td><a href="/admin/actualizar-vacuna/{{ v.id_vacuna }}?id_mascota={{ mascota_activa.id_mascota }}" class="btn-editar">Actualizar</a></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="empty-msg">Sin registro de vacunas.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div style="margin-top: 2rem; padding-top: 1.75rem; border-top: 1px solid var(--border-color);">
+            <p class="seccion-titulo" style="color:var(--success);">Nueva Inmunización</p>
+            <form method="POST" action="/admin/agregar-vacuna">
+                <input type="hidden" name="id_mascota" value="{{ mascota_activa.id_mascota }}" />
+                <div class="form-grid">
+                    <div>
+                        <label>Nombre de la Vacuna</label>
+                        <input type="text" name="nombre_vacuna" placeholder="Ej: Rabia / Polivalente" required />
+                    </div>
+                    <div></div>
+                    <div>
+                        <label>Fecha de Aplicación</label>
+                        <input type="text" name="fecha_aplicacion" placeholder="DD/MM/AAAA" required />
+                    </div>
+                    <div>
+                        <label>Fecha Próxima Dosis</label>
+                        <input type="text" name="proxima_dosis" placeholder="DD/MM/AAAA" required />
+                    </div>
+                </div>
+                <button type="submit" class="btn-guardar">Registrar Vacuna</button>
+            </form>
+        </div>
+      </div>
+
+      <div class="card" id="historial">
+        <p class="seccion-titulo">Antecedentes Clínicos</p>
+        {% if historial %}
+          {% for h in historial %}
+          <div class="historial-bloque">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <span style="font-size:0.75rem; font-weight:700; color:var(--primary);">📅 {{ h.fecha }}</span>
+              <a href="/admin/editar-historial/{{ h.id_historial }}?id_mascota={{ mascota_activa.id_mascota }}" class="btn-editar">Actualizar</a>
+            </div>
+            <div class="grid-detalles">
+              <div class="dato"><span class="dato-label">Enfermedades</span><span class="dato-valor">{{ h.enfermedades_previas }}</span></div>
+              <div class="dato"><span class="dato-label">Cirugías</span><span class="dato-valor">{{ h.cirugias_previas }}</span></div>
+              <div class="dato"><span class="dato-label">Alergias</span><span class="dato-valor">{{ h.alergias }}</span></div>
+              <div class="dato"><span class="dato-label">Tratamientos</span><span class="dato-valor">{{ h.tratamientos_previos }}</span></div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom: 1.25rem;">No existen antecedentes previos registrados.</p>
+        {% endif %}
+
+        <div style="margin-top: 1.75rem; padding-top: 1.75rem; border-top: 1px solid var(--border-color);">
+            <p class="seccion-titulo">Agregar Antecedente</p>
+            <form method="POST" action="/admin/agregar-historial">
+                <input type="hidden" name="id_mascota" value="{{ mascota_activa.id_mascota }}" />
+                <div style="margin-bottom: 13px; width: 200px;">
+                    <label>Fecha de Registro</label>
+                    <input type="text" name="fecha" placeholder="DD/MM/AAAA" required />
+                </div>
+                <div class="form-grid">
+                    <div><label>Enfermedades</label><input type="text" name="enfermedades_previas" placeholder="Ninguna" /></div>
+                    <div><label>Cirugías</label><input type="text" name="cirugias_previas" placeholder="Ninguna" /></div>
+                    <div><label>Alergias</label><input type="text" name="alergias" placeholder="Ninguna" /></div>
+                    <div><label>Tratamientos</label><input type="text" name="tratamientos_previos" placeholder="Ninguno" /></div>
+                </div>
+                <button type="submit" class="btn-guardar" style="background: linear-gradient(135deg, var(--primary-dark), var(--primary)); box-shadow: 0 2px 10px rgba(58,111,216,0.25);">Guardar Antecedentes</button>
+            </form>
+        </div>
+      </div>
+
+      <div class="card" id="bitacora">
+        <p class="seccion-titulo">Bitácora de Seguimiento</p>
+        {% if bitacora %}
+          {% for b in bitacora | sort(attribute='fecha', reverse=True) %}
+          <div class="bitacora-item">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="bitacora-tipo">{{ b.tipo_evento }}</span>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-weight:600; color:var(--text-muted); font-size: 0.82rem;">{{ b.fecha }}</span>
+                <a href="/admin/actualizar-bitacora/{{ b.id_bitacora }}?id_mascota={{ mascota_activa.id_mascota }}" class="btn-editar">Actualizar</a>
+              </div>
+            </div>
+            <div style="font-size: 1rem; margin-top:10px; color:var(--primary-dark); font-weight: 600;">{{ b.motivo }}</div>
+            <div style="margin-top:8px; display:grid; gap:4px; font-size: 0.85rem;">
+                <div><strong style="color: var(--text-muted);">Diagnóstico:</strong> {{ b.diagnostico }}</div>
+                <div><strong style="color: var(--text-muted);">Procedimiento:</strong> {{ b.procedimiento }}</div>
+                {% if b.medicacion and b.medicacion != 'Ninguna' %}
+                <div><strong style="color: var(--text-muted);">RX/Medicación:</strong> {{ b.medicacion }}</div>
+                {% endif %}
+                <div style="font-style:italic; color:var(--text-muted); margin-top: 2px;">Obs: {{ b.observaciones }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom: 1.25rem;">No hay registros en la bitácora de consultas.</p>
+        {% endif %}
+
+        <div style="margin-top: 1.75rem; padding-top: 1.75rem; border-top: 1px solid var(--border-color);">
+            <p class="seccion-titulo">Nueva Entrada de Bitácora</p>
+            <form method="POST" action="/admin/agregar-bitacora">
+                <input type="hidden" name="id_mascota" value="{{ mascota_activa.id_mascota }}" />
+                <div class="form-grid" style="margin-bottom:13px;">
+                    <div><label>Fecha Consulta</label><input type="text" name="fecha" placeholder="DD/MM/AAAA" required /></div>
+                    <div>
+                        <label>Tipo de Evento</label>
+                        <select name="tipo_evento">
+                            <option value="Consulta">Consulta General</option>
+                            <option value="Control">Control</option>
+                            <option value="Urgencia">Urgencia Médica</option>
+                            <option value="Cirugía">Procedimiento Quirúrgico</option>
+                            <option value="Vacunación">Vacunación</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid; gap:11px;">
+                    <div><label>Motivo</label><input type="text" name="motivo" required /></div>
+                    <div class="form-grid">
+                        <div><label>Síntomas</label><input type="text" name="sintomas" required /></div>
+                        <div><label>Diagnóstico</label><input type="text" name="diagnostico" required /></div>
+                    </div>
+                    <div><label>Procedimiento Realizado</label><input type="text" name="procedimiento" required /></div>
+                    <div class="form-grid">
+                        <div><label>Medicación Prescrita</label><input type="text" name="medicacion" placeholder="Ninguna" /></div>
+                        <div><label>Observaciones Médicas</label><input type="text" name="observaciones" required /></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-guardar">Finalizar Registro</button>
+            </form>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

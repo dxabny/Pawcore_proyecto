@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PawCore – Vacunas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-image: url('/static/img/Huellas.png');
+      background-size: 380px auto;
+      background-repeat: repeat;
+      background-attachment: fixed;
+      background-color: #eef2fb;
+      color: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(238, 244, 255, 0.88);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    nav {
+      position: relative;
+      z-index: 1;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #dce6f8;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(6px);
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #1a3a5a;
+      text-decoration: none;
+    }
+    .logo span { color: #3a6fd8; }
+
+    .paso-indicator { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.97);
+      border: 1px solid #dce6f8;
+      border-radius: 16px;
+      padding: 2.2rem 2rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 20px rgba(26,58,90,0.10);
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #1a3a5a;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+    }
+    .card-subtitle {
+      font-size: 0.87rem;
+      color: #64748b;
+      margin-bottom: 1.6rem;
+    }
+
+    .seccion-titulo {
+      font-size: 0.69rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #3a6fd8;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .seccion-titulo::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: linear-gradient(to right, #dce6f8, transparent);
+      border-radius: 2px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: #f8faff;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 14px;
+    }
+    input:focus {
+      border-color: #3a6fd8;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(58,111,216,0.10);
+    }
+
+    .dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 11px;
+      background: #3a6fd8;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 4px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #2d58b0; }
+
+    .btn-omitir {
+      width: 100%;
+      padding: 11px;
+      background: transparent;
+      color: #3a6fd8;
+      border: 1.5px solid #3a6fd8;
+      border-radius: 9px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+    .btn-omitir:hover { background: #dce6f8; }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: #8a98b8;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="logo">Paw<span>Core</span></a>
+    <span class="paso-indicator">Paso 3 de 3</span>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-title">Vacunas</div>
+      <div class="card-subtitle">Registra la primera vacuna de tu mascota.</div>
+
+      <p class="seccion-titulo">Datos de la Vacuna</p>
+
+      <form method="POST" action="/vacunas-registro">
+        <input type="hidden" name="id_mascota" value="{{ id_mascota }}" />
+        <input type="hidden" name="cedula_dueno" value="{{ cedula_dueno }}" />
+
+        <label>Nombre de la vacuna</label>
+        <input type="text" name="nombre_vacuna" placeholder="Ej: Antirrabica, DHPPi" required />
+
+        <div class="dos-columnas">
+          <div>
+            <label>Fecha de aplicación</label>
+            <input type="text" name="fecha_aplicacion" placeholder="AAAA-MM-DD" required />
+          </div>
+          <div>
+            <label>Próxima dosis</label>
+            <input type="text" name="proxima_dosis" placeholder="AAAA-MM-DD" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Finalizar registro</button>
+        <a href="/dashboard?cedula={{ cedula_dueno }}">
+          <button type="button" class="btn-omitir">Omitir este paso</button>
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <footer>PawCore · 2026</footer>
+</body>
+</html>

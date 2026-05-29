@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawCore - Registrar Mascota</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            background-image: url('/static/img/perro2.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(235, 240, 252, 0.76);
+            z-index: 0;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-text {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #1a3a5a;
+            letter-spacing: -0.03em;
+        }
+
+        .logo-text span {
+            color: #3a6fd8;
+        }
+
+        .page-title p {
+            font-size: 0.84rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.97);
+            border-radius: 14px;
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(26,26,46,0.09);
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #4a5568;
+            text-transform: uppercase;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid #d1dbe8;
+            border-radius: 7px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            background: #f8faff;
+            color: #1a1a2e;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #3a6fd8;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(58,111,216,0.1);
+        }
+
+        .input-error {
+            border-color: #d32f2f !important;
+            background: #fffafa !important;
+        }
+
+        .error-text {
+            color: #d32f2f;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        button {
+            width: 100%;
+            padding: 11px;
+            background: #3a6fd8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: #2d58b0;
+        }
+
+        .peso-hint {
+            font-size: 0.75rem;
+            color: #3a6fd8;
+            margin-top: 4px;
+            display: block;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="page-title">
+        <div class="logo-text">
+            Paw<span>Core</span>
+        </div>
+        <p>Completa el perfil de tu mascota</p>
+    </div>
+
+    <div class="card">
+
+        <form action="/registrar-mascota" method="POST">
+
+            <input type="hidden" name="cedula_dueno" value="{{ cedula_dueno }}">
+
+            <div class="form-group">
+                <label>Nombre de la Mascota</label>
+                <input
+                    type="text"
+                    name="nombre_mascota"
+                    value="{{ form.nombre_mascota if form else '' }}"
+                    class="{{ 'input-error' if errores and errores.nombre_mascota }}"
+                    required
+                >
+                {% if errores and errores.nombre_mascota %}<span class="error-text">{{ errores.nombre_mascota }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Especie</label>
+                <select name="especie" class="{{ 'input-error' if errores and errores.especie }}" required>
+                    <option value="">Selecciona una especie</option>
+                    <option value="Perro" {{ 'selected' if form and form.especie == 'Perro' }}>Perro</option>
+                    <option value="Gato" {{ 'selected' if form and form.especie == 'Gato' }}>Gato</option>
+                    <option value="Conejo" {{ 'selected' if form and form.especie == 'Conejo' }}>Conejo</option>
+                    <option value="Ave" {{ 'selected' if form and form.especie == 'Ave' }}>Ave</option>
+                </select>
+                {% if errores and errores.especie %}<span class="error-text">{{ errores.especie }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Raza</label>
+                <input
+                    type="text"
+                    name="raza"
+                    value="{{ form.raza if form else '' }}"
+                    class="{{ 'input-error' if errores and errores.raza }}"
+                    required
+                    placeholder="Ej: Labrador, Siamés..."
+                >
+                {% if errores and errores.raza %}<span class="error-text">{{ errores.raza }}</span>{% endif %}
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Edad</label>
+                    <input
+                        type="number"
+                        name="edad"
+                        value="{{ form.edad if form else '' }}"
+                        class="{{ 'input-error' if errores and errores.edad }}"
+                        min="0"
+                        required
+                    >
+                    {% if errores and errores.edad %}<span class="error-text">{{ errores.edad }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Peso (kg)</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="campo-peso"
+                        name="peso"
+                        value="{{ form.peso if form else '' }}"
+                        class="{{ 'input-error' if errores and errores.peso }}"
+                        min="0.01"
+                        required
+                    >
+                    <span class="peso-hint" id="peso-hint"></span>
+                    {% if errores and errores.peso %}<span class="error-text">{{ errores.peso }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Género</label>
+                    <select name="genero" class="{{ 'input-error' if errores and errores.genero }}" required>
+                        <option value="">Selecciona</option>
+                        <option value="Macho" {{ 'selected' if form and form.genero == 'Macho' }}>Macho</option>
+                        <option value="Hembra" {{ 'selected' if form and form.genero == 'Hembra' }}>Hembra</option>
+                    </select>
+                    {% if errores and errores.genero %}<span class="error-text">{{ errores.genero }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select name="estado_reproductivo" class="{{ 'input-error' if errores and errores.estado_reproductivo }}" required>
+                        <option value="">Selecciona</option>
+                        <option value="Fértil" {{ 'selected' if form and form.estado_reproductivo == 'Fértil' }}>Entero</option>
+                        <option value="Esterilizado" {{ 'selected' if form and form.estado_reproductivo == 'Esterilizado' }}>Castrado</option>
+                    </select>
+                    {% if errores and errores.estado_reproductivo %}<span class="error-text">{{ errores.estado_reproductivo }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Color</label>
+                <input
+                    type="text"
+                    name="color"
+                    value="{{ form.color if form else '' }}"
+                    class="{{ 'input-error' if errores and errores.color }}"
+                    required
+                    placeholder="Ej: Negro, Blanco..."
+                >
+                {% if errores and errores.color %}<span class="error-text">{{ errores.color }}</span>{% endif %}
+            </div>
+
+            <button type="submit">
+                Registrar mascota
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    const PESO_RANGOS = {
+        "perro":  { min: 0.5,  max: 120.0, label: "Perro" },
+        "gato":   { min: 0.5,  max: 15.0,  label: "Gato" },
+        "conejo": { min: 0.3,  max: 8.0,   label: "Conejo" },
+        "ave":    { min: 0.01, max: 2.0,   label: "Ave" }
+    };
+
+    const selectEspecie = document.querySelector('select[name="especie"]');
+    const inputPeso     = document.getElementById('campo-peso');
+    const hintPeso      = document.getElementById('peso-hint');
+
+    function actualizarPeso() {
+        const especie = selectEspecie.value.toLowerCase();
+        const rango = PESO_RANGOS[especie];
+        if (rango) {
+            inputPeso.min  = rango.min;
+            inputPeso.max  = rango.max;
+            inputPeso.step = especie === 'ave' ? '0.001' : '0.1';
+            hintPeso.textContent = `Rango válido para ${rango.label}: ${rango.min} – ${rango.max} kg`;
+        } else {
+            inputPeso.min  = '0.01';
+            inputPeso.max  = '500';
+            inputPeso.step = '0.1';
+            hintPeso.textContent = '';
+        }
+    }
+
+    selectEspecie.addEventListener('change', actualizarPeso);
+    // Ejecutar al cargar en caso de que haya un valor preseleccionado
+    actualizarPeso();
+</script>
+</body>
+</html>

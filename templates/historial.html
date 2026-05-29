@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block estilos %}
+<style>
+  body {
+    background-image: url('/static/img/Huellas.png') !important;
+    background-size: 380px auto !important;
+    background-repeat: repeat !important;
+    background-attachment: fixed !important;
+    background-color: #eef2fb !important;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(238, 244, 255, 0.88);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .contenido { position: relative; z-index: 1; }
+
+  .hist-wrapper {
+    max-width: 520px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+  }
+
+  .hist-header {
+    margin-bottom: 1.5rem;
+  }
+  .hist-header h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1a3a5a;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.2rem;
+  }
+  .hist-header p { font-size: 0.88rem; color: #64748b; }
+
+  .id-badge {
+    background: #eef4ff;
+    border: 1px solid #dce6f8;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .id-badge .label { font-size: 0.8rem; color: #64748b; margin-bottom: 3px; }
+  .id-badge .id-num { font-size: 1.5rem; font-weight: 800; color: #3a6fd8; }
+  .id-badge .note { font-size: 0.78rem; color: #8a98b8; margin-top: 3px; }
+
+  .card {
+    background: rgba(255,255,255,0.97);
+    border: 1px solid #dce6f8;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(26,58,90,0.09);
+  }
+
+  .seccion-titulo {
+    font-size: 0.69rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #3a6fd8;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .seccion-titulo::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(to right, #dce6f8, transparent);
+    border-radius: 2px;
+  }
+
+  .form-group { margin-bottom: 1rem; display: flex; flex-direction: column; }
+
+  label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  input {
+    padding: 10px 13px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: #f8faff;
+    color: #1a1a2e;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input:focus {
+    border-color: #3a6fd8;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(58,111,216,0.10);
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #3a6fd8;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .btn-submit:hover { background: #2d58b0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hist-wrapper">
+
+  <div class="hist-header">
+    <h2>Historial Clínico</h2>
+    <p>Completa los antecedentes médicos básicos de la mascota.</p>
+  </div>
+
+  <div class="id-badge">
+    <div class="label">¡Mascota pre-registrada con éxito! El ID asignado es:</div>
+    <div class="id-num">#{{ id_mascota }}</div>
+    <div class="note">Recuerda este número para las consultas con tu veterinario.</div>
+  </div>
+
+  <div class="card">
+    <p class="seccion-titulo">Antecedentes Médicos</p>
+
+    <form action="/historial" method="POST">
+      <input type="hidden" name="id_mascota" value="{{ id_mascota }}">
+      <input type="hidden" name="cedula_dueno" value="{{ cedula_dueno }}">
+
+      <div class="form-group">
+        <label>Enfermedades Previas</label>
+        <input type="text" name="enfermedades_previas" placeholder="Ej: Ninguna, Parvovirus en 2024" required>
+      </div>
+
+      <div class="form-group">
+        <label>Cirugías Previas</label>
+        <input type="text" name="cirugias_previas" placeholder="Ej: Esterilización, Ninguna" required>
+      </div>
+
+      <div class="form-group">
+        <label>Alergias Conocidas</label>
+        <input type="text" name="alergias" placeholder="Ej: Alérgico a la picadura de pulga, Ninguna" required>
+      </div>
+
+      <div class="form-group">
+        <label>Tratamientos Anteriores</label>
+        <input type="text" name="tratamientos_previos" placeholder="Ej: Ninguno" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Continuar a Vacunas</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

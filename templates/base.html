@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PawCore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif !important; background-image: none !important; }
+    .logo {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #1a3a5a;
+      text-decoration: none;
+    }
+    .logo span { color: #3a6fd8; }
+  </style>
+  {% block estilos %}{% endblock %}
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Paw<span>Core</span></a>
+    <div class="nav-actions">
+      {% block nav_extra %}{% endblock %}
+    </div>
+  </nav>
+
+  <div class="contenido">
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer>PawCore · 2026</footer>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar contraseña - PawCore</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background-color: #eef2fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .header-logo {
+      position: fixed;
+      top: 22px;
+      left: 28px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: #3a6fd8; }
+
+    .card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(26,26,46,0.09);
+      width: 100%;
+      max-width: 420px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header .icon {
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      letter-spacing: -0.02em;
+    }
+
+    .card-header p {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .error-alert {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .success-alert {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #16a34a;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .field-group { margin-bottom: 1.1rem; }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      background: #f8faff;
+      color: #1a1a2e;
+      outline: none;
+      transition: all 0.2s;
+    }
+    input:focus {
+      border-color: #3a6fd8;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(58,111,216,0.12);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      background: #3a6fd8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: #2d58b0; }
+
+    .footer-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.88rem;
+      color: #64748b;
+      border-top: 1px solid #edf2f7;
+      padding-top: 1.2rem;
+    }
+    .footer-link a { color: #3a6fd8; font-weight: 600; text-decoration: none; }
+    .footer-link a:hover { text-decoration: underline; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 1.2rem 0;
+      color: #94a3b8;
+      font-size: 0.78rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-logo">
+    <a href="/" class="logo">Paw<span>Core</span></a>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="icon">🔑</div>
+      <h2>Recuperar contraseña</h2>
+      <p>Ingresa tu cédula y correo registrado para restablecer tu contraseña.</p>
+    </div>
+
+    {% if error %}
+    <div class="error-alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/recuperar-contrasena">
+      <div class="field-group">
+        <label for="cedula">Cédula</label>
+        <input type="text" id="cedula" name="cedula" placeholder="Ej: 1020304050" required>
+      </div>
+
+      <div class="field-group">
+        <label for="correo">Correo electrónico registrado</label>
+        <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+      </div>
+
+      <div class="divider">nueva contraseña</div>
+
+      <div class="field-group">
+        <label for="nueva_password">Nueva contraseña</label>
+        <input type="password" id="nueva_password" name="nueva_password" placeholder="Mínimo 6 caracteres" required>
+      </div>
+
+      <div class="field-group">
+        <label for="nueva_password_confirm">Confirmar nueva contraseña</label>
+        <input type="password" id="nueva_password_confirm" name="nueva_password_confirm" placeholder="Repite la contraseña" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Restablecer contraseña</button>
+    </form>
+
+    <div class="footer-link">
+      ¿Recordaste tu contraseña? <a href="/login">Iniciar sesión</a>
+    </div>
+
+  </div>
+
+</body>
+</html>

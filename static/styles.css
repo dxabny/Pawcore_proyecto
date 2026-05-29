@@ -1,0 +1,411 @@
+/* --- CONFIGURACIÓN GENERAL Y FUENTE --- */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body { 
+  font-family: 'IBM Plex Sans', sans-serif; 
+  background-color: #eef2fa;
+  color: #1a1a2e; 
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh; 
+}
+
+/* --- BARRA DE NAVEGACIÓN SUPERIOR --- */
+nav { 
+  padding: 1.2rem 2.5rem; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  border-bottom: 1px solid #e2e8f0; 
+  background: #ffffff; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04); /* Sombra para separar la barra del fondo */
+  position: relative;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  text-decoration: none;
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #1a3a5a, #3a6fd8);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0;
+  flex-shrink: 0;
+}
+
+.logo span {
+  color: #3a6fd8;
+}
+
+.nav-link { 
+  font-size: 0.88rem; 
+  color: #3a6fd8; 
+  text-decoration: none; 
+  border: 1px solid #3a6fd8; 
+  padding: 6px 16px; 
+  border-radius: 6px; 
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover { 
+  background: #eef2fb; 
+  transform: translateY(-1px);
+}
+
+/* --- CONTENEDOR PRINCIPAL CENTRADO --- */
+.contenido { 
+  flex: 1; 
+  max-width: 1050px; /* Un poco más ancho para que la tabla luzca genial */
+  margin: 0 auto; 
+  width: 100%; 
+  padding: 2.5rem 2rem; 
+  position: relative;
+  z-index: 5;
+}
+
+/* --- TARJETAS ESTILO MAQUETA (Blancas y elevadas sobre el fondo) --- */
+.card { 
+  background: #ffffff; 
+  border: 1px solid rgba(199, 212, 240, 0.6); /* Borde sutil */
+  border-radius: 12px; 
+  padding: 1.8rem; 
+  margin-bottom: 1.5rem; 
+  /* Sombra más profunda para que parezcan flotar sobre las huellas */
+  box-shadow: 0 10px 25px rgba(26, 26, 46, 0.06), 0 2px 6px rgba(26, 26, 46, 0.02); 
+}
+
+.card h3 { 
+  font-size: 1.1rem; 
+  font-weight: 600; 
+  margin-bottom: 1.2rem; 
+  color: #1a1a2e; 
+}
+
+/* --- FORMULARIOS Y CAMPOS DE ENTRADA --- */
+label { 
+  display: block; 
+  font-size: 0.85rem; 
+  color: #4a5568; 
+  margin-bottom: 6px; 
+  font-weight: 500;
+}
+
+input, select, textarea { 
+  width: 100%; 
+  padding: 11px 14px; 
+  border: 1px solid #d8e2f4; 
+  border-radius: 8px; 
+  font-size: 0.9rem; 
+  margin-bottom: 18px; 
+  outline: none; 
+  font-family: 'IBM Plex Sans', sans-serif; 
+  background: #f8faff; 
+  color: #1a1a2e; 
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus { 
+  border-color: #3a6fd8; 
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(58, 111, 216, 0.1); 
+}
+
+textarea { 
+  resize: vertical; 
+  min-height: 90px; 
+}
+
+/* --- BOTONES MODERNOS --- */
+button, .btn-submit { 
+  width: 100%; 
+  padding: 12px; 
+  background-color: #3a6fd8; 
+  color: white; 
+  border: none; 
+  border-radius: 8px; 
+  font-size: 0.95rem; 
+  cursor: pointer; 
+  font-family: 'IBM Plex Sans', sans-serif; 
+  font-weight: 500;
+  transition: background 0.2s ease;
+  margin-top: 4px; 
+}
+
+button:hover { 
+  background-color: #2d58b0; 
+}
+
+.btn-outline { 
+  background: transparent; 
+  color: #3a6fd8; 
+  border: 1px solid #3a6fd8; 
+  margin-top: 10px; 
+}
+
+.btn-outline:hover { 
+  background: #eef2fb; 
+}
+
+/* --- MENSAJES DE ERROR --- */
+.error { 
+  margin-top: 14px; 
+  padding: 12px; 
+  border-radius: 8px; 
+  font-size: 0.88rem; 
+  text-align: center; 
+  background-color: #fde8e8; 
+  color: #9b2335; 
+  border: 1px solid #f5c0c0; 
+}
+
+.sin-datos { 
+  font-size: 0.88rem; 
+  color: #8a94a6; 
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* --- TABLAS ESTILIZADAS (Look Profesional) --- */
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  font-size: 0.9rem; 
+}
+
+thead { 
+  background: #f8faff; 
+}
+
+th { 
+  text-align: left; 
+  padding: 14px 16px; 
+  font-weight: 600; 
+  color: #616e88; 
+  border-bottom: 2px solid #eef2fb; 
+  font-size: 0.78rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+}
+
+td { 
+  padding: 14px 16px; 
+  border-bottom: 1px solid #edf2f7; 
+  color: #2d3142; 
+}
+
+tr:last-child td { 
+  border-bottom: none; 
+}
+
+tr:hover td { 
+  background: #fafbfe; /* Efecto sutil al pasar el puntero */
+}
+
+/* Botones pequeños dentro de la tabla */
+.btn-detail {
+  text-decoration: none;
+  background-color: #3a6fd8;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.btn-detail:hover {
+  background-color: #2d58b0;
+}
+
+/* --- FOOTER --- */
+footer { 
+  text-align: center; 
+  padding: 1.8rem; 
+  font-size: 0.85rem; 
+  color: #8a98b8; 
+  border-top: 1px solid #e2e8f0; 
+  background: #ffffff;
+  margin-top: auto; 
+  position: relative;
+  z-index: 10;
+}
+/* ==========================================================================
+   DISEÑO PREMIUM EXCLUSIVO PARA LA PÁGINA DE REGISTRO
+   ========================================================================== */
+
+/* Fondo general con patrón de huellas */
+.auth-page {
+    margin: 0;
+    padding: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    background-color: #eef2fa;
+}
+
+/* Centrado perfecto en pantalla */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: rgba(244, 247, 252, 0.35); /* Suaviza el patrón de fondo */
+}
+
+/* Estilo de la Tarjeta */
+.auth-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(26, 26, 46, 0.08);
+    border: 1px solid rgba(199, 212, 240, 0.5);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-header .logo {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: -0.02em;
+}
+
+.auth-header .logo span {
+    color: #3a6fd8;
+}
+
+.auth-header h2 {
+    font-size: 1.35rem;
+    color: #1a1a2e;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+/* Grupos del Formulario */
+.form-group {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+/* Contenedor para posicionar los iconos */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-wrapper i {
+    position: absolute;
+    left: 14px;
+    color: #3a6fd8; /* Azul representativo de PawCore */
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+/* Inputs adaptados */
+.input-icon-wrapper input {
+    width: 100%;
+    padding: 11px 14px 11px 40px; /* Desplazamiento del texto para el icono */
+    border: 1px solid #d8e2f4;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #f8faff;
+    color: #1a1a2e;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-icon-wrapper input:focus {
+    border-color: #3a6fd8;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(58, 111, 216, 0.12);
+}
+
+/* Manejo estético de errores (Mantiene tus clases) */
+.input-error {
+    border-color: #dc2626 !important;
+    background-color: #fef2f2 !important;
+}
+
+.error-message {
+    color: #dc2626;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    font-weight: 500;
+    display: block;
+}
+
+/* Botón estilizado */
+.auth-card button {
+    width: 100%;
+    padding: 12px;
+    background: #3a6fd8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s ease;
+}
+
+.auth-card button:hover {
+    background: #2d58b0;
+}
+
+/* Enlace inferior */
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #64748b;
+    border-top: 1px solid #edf2f7;
+    padding-top: 15px;
+}
+
+.login-link a {
+    color: #3a6fd8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
