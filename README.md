@@ -112,17 +112,12 @@ venv\Scripts\activate      # Windows
 pip install -r requirements.txt
 ```
 
-3. Ejecutar la aplicacion:
+ Ejecutar la aplicacion:
 
 ```bash
 uvicorn main:app --reload
 ```
 
-4. Abrir en el navegador:
-
-- Aplicacion: http://127.0.0.1:8000
-- Panel admin: http://127.0.0.1:8000/admin/login
-- Documentacion API: http://127.0.0.1:8000/docs
 
 ### Dependencias (requirements.txt)
 
